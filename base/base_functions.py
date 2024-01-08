@@ -11,3 +11,4 @@ class Base(unittest.TestCase, object):
 
     def check_data_type(self, data_type, value):
         return type(value) == data_type
+

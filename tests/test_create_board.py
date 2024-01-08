@@ -31,3 +31,4 @@ class TestCreateBoard(Base):
         self.assertTrue(self.check_data_type(str, response_json["name"]),"name type is not string")
         self.assertTrue(self.check_data_type(str, response_json["prefs"]["background"]), "background type is not string")
 
+
