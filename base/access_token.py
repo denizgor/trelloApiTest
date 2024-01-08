@@ -1,0 +1,3 @@
+class AccessToken():
+    API_KEY = "c66df0a2cf079ec4106ba8be80d42873"
+    ACCESS_TOKEN = "ATTAd6046b7802c55c93f6ab9cd8fdc2d2568b3b4868161eda0e33059e0b7f2e4cdfF20B10BF"
