@@ -1,6 +1,7 @@
 import base.base_urls
 from base.base_functions import Base
 from base.access_token import AccessToken
+from base.base_payloads import BasePayload
 import json
 
 class TestCreateBoard(Base):
@@ -24,7 +25,7 @@ class TestCreateBoard(Base):
         board_name = response_json["name"]
         board_id = response_json["id"]
 
-        self.assertTrue(self.check_data_type(dict, response_json), "Response type is not dictionary!")
+        self.check_data_type(dict, response_json)
 
         self.check_data_type(str, board_name)
         self.check_key_and_value(board_name,self.board_payload["name"])
@@ -37,6 +38,8 @@ class TestCreateBoard(Base):
         self.check_key_and_value("id", response_json)
         # self.assertTrue("id" in response_json, "Board id is not present in the response!")
         # self.assertTrue(response_json["id"] is not None, "Error: Board id is null!")
+
+        self.check_all_keys(BasePayload.default_payload, response_json)
 
         self.assertTrue(response_json["closed"] is False, "Error: Board is closed!")
 
