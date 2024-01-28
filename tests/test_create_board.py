@@ -44,5 +44,3 @@ class TestCreateBoard(Base):
         self.assertTrue(response_json["closed"] is False, "Error: Board is closed!")
 
         self.assertTrue(self.check_data_type(str, response_json["prefs"]["background"]), "background type is not string")
-
-
