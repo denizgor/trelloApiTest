@@ -26,3 +26,7 @@ class Base(unittest.TestCase, object):
             return type(key_in_response) == data_type
         except AssertionError as error:
             print("Assertion error: {}".format(error))
+
+    def check_all_keys(self, reference_payload, response):
+        for key in reference_payload:
+            self.assertTrue(key in response)
