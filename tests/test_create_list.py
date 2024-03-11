@@ -3,41 +3,65 @@ from base.base_functions import Base
 from base.access_token import AccessToken
 from base.base_payloads import BasePayload
 import json
+import logging
+
 
 class TestCreateList(Base):
 
-    board_payload = { "name": "Test",
-                      "key": base.access_token.AccessToken.API_KEY,
-                      "token": base.access_token.AccessToken.ACCESS_TOKEN
+    def test_create_list(self):
+        # BOARD PAYLOAD
+        board_payload = {"name": "Test_List_Board",
+                         "key": base.access_token.AccessToken.API_KEY,
+                         "token": base.access_token.AccessToken.ACCESS_TOKEN
 
-    }
+                         }
 
-    def test_create_board(self):
-        response = self.general_request(method="POST", url=base.base_urls.BaseUrls.BOARDS_URL,
-                                        payload= self.board_payload)
+        headers = {
+            "Accept": "application/json"
+        }
+
+        #Create Board
+        response = self.general_request(method="POST", url=base.base_urls.BaseUrls.BOARDS_URL, headers=headers,
+                                        payload=board_payload)
         formatted_response = json.dumps(response.json(), indent=2)
         print(formatted_response)
         board_id = response.json()["id"]
-        print(board_id)
-        return str(board_id)
+        print("Board ID: ", board_id)
 
-    headers = {
-        "Accept": "application/json"
-    }
+        self.assertEqual(response.status_code, 200, "Status code is NOT 200!")
+        self.assertEqual(response.headers["Content-Type"], "application/json; charset=utf-8", "Incorrect JSON format!")
 
-    query = {
-        "name": "Test_List2",
-        "key": base.access_token.AccessToken.API_KEY,
-        "token": base.access_token.AccessToken.ACCESS_TOKEN
-    }
 
-    def test_create_new_list(self):
-        response = self.general_request(method="POST", url=base.base_urls.BaseUrls.CREATE_LIST_URL.format(board_id= self.test_create_board()),
-                                        headers=self.headers, payload=self.query)
+
+
+        # CREATE LIST PAYLOAD
+        query = {
+            "name": "Test_List1",
+            "idBoard": board_id,
+            "key": base.access_token.AccessToken.API_KEY,
+            "token": base.access_token.AccessToken.ACCESS_TOKEN
+        }
+
+        #log
+        #logging.basicConfig(level=logging.DEBUG)
+
+        # Create a new list
+        response = self.general_request(method="POST", url=base.base_urls.BaseUrls.LIST_URL, params=query)
+        list_id = response.json()["id"]
 
         print(response)
+        print("List ID: ", list_id)
+        print("Create List Response Text: ", response.text)
 
+        #Get List
 
-    def test_get_lists(self):
-        response = self.general_request(method="POST", url="https://api.trello.com/1/boards/65b6cfef61edf7fc0a32fea2/lists", headers=self.headers, payload=self.query)
-        print(response.json)
+        query = {
+
+            "key": base.access_token.AccessToken.API_KEY,
+            "token": base.access_token.AccessToken.ACCESS_TOKEN,
+        }
+        response = self.general_request(method="GET", url=base.base_urls.BaseUrls.GET_LIST_URL.format(list_id), params=query)
+        print("Get List: ", response.json())
+        print(response.status_code)
+        print(response.text)
+

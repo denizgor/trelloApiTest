@@ -12,9 +12,13 @@ class TestCreateBoard(Base):
 
     }
 
+    headers = {
+        "Accept": "application/json"
+    }
+
     def test_create_board(self):
         response = self.general_request(method="POST", url=base.base_urls.BaseUrls.BOARDS_URL,
-                                        payload= self.board_payload)
+                                        headers=self.headers, payload= self.board_payload)
         formatted_response = json.dumps(response.json(), indent=2)
         print(formatted_response)
 
